@@ -7,5 +7,6 @@ void main()
 	
 	//printDefinitions(getDefinitions("User"));
 	readfile();
+	valPhone("0777790838");
 	system("Pause");
 }

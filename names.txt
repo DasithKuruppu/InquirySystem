@@ -1,4 +1,8 @@
-sample
-text
-is here :D
-ok
+{
+'user':'xyz',
+'password':'DKWAEJDSEWEWEWEW#@'
+},
+{
+'user':'xueyz',
+'password':'MEWEEOW#$#@#'
+}

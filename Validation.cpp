@@ -6,10 +6,10 @@ bool valPhone(string phoneno) {
 
 	auto m = cmatch{};
 
-	bool x = regex_match(s, m, regex{ R"(0\d{2}[-|\s]?\d{7})" });
-
+	return regex_match(s, m, regex{ R"(0\d{2}[-|\s]?\d{7})" });
+	
 	//samples possible - 0777790838 , 077-7790838 , 077 7790838
-	return x;
+	
 }
 
 

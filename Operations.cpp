@@ -1,4 +1,5 @@
 #include "Operations.h"
+#include "JSONlightparser.h"
 /*
 void CRUD(string instruction) {
 
@@ -60,10 +61,23 @@ void readfile() {
 	string STRING;
 	ifstream infile;
 	infile.open("names.txt");
+	string users[4];
+	int usercount = 0;
 	while (!infile.eof()) // To get you all the lines.
 	{
-		getline(infile, STRING); // Saves the line in STRING.
-		cout << STRING; // Prints our STRING.
+		if (usercount <= 3) {
+			getline(infile, STRING);
+			users[usercount] = STRING;
+			usercount++;
+			if (usercount == 4) {
+				printDefinitions(readChunk(users, 4));
+				usercount = 0;
+			}
+		}
+		
+		 // Saves the line in STRING.
+
+		 // Prints our STRING.
 	}
 	infile.close();
 	system("pause");
