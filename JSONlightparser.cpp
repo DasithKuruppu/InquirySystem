@@ -29,3 +29,13 @@ map <string, string> readChunk(string lines[],int length) {
 	}
 	return returnObj;
 }
+
+void writeChunk(map<string, string> record,ofstream &outputfile) {
+	outputfile << "{" << endl; // begining of record
+	for (map<string, string>::iterator ii = record.begin(); ii != record.end(); ++ii)
+	{
+		outputfile << "'"+(*ii).first+"':'"+(*ii).second+"'" << endl;
+	}
+	outputfile << "}," << endl; // end of record
+}
+

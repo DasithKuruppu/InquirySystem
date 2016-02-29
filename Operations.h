@@ -16,5 +16,6 @@ void initializeDefinitions();
 void printDefinitions(map<string, map<string, string>> Definition);
 void printDefinitions(map<string, string> Definition);
 map <string, string> userDefinition();
-void readfile();
+void readfile(int chunk = 4);
+void update(map<string, string> originalrecord, map<string, string> updaterecord, const int chunk = 4);
 #endif

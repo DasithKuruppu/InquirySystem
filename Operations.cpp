@@ -12,7 +12,7 @@ map <string, map<string, string>> getDefinitions() {
 	
 }
 map <string, string> getDefinitions(string def) {
-	return RecordDefinitions[def];
+		return RecordDefinitions[def];
 }
 map <string, string> userDefinition(){
 	map <string,string> user;
@@ -38,7 +38,7 @@ map <string, string> inquiryDefinition() {
 
 void initializeDefinitions() {
 	RecordDefinitions["User"] = userDefinition();
-
+	RecordDefinitions["Inquiry"] = inquiryDefinition();
 }
 void printDefinitions(map<string,map<string, string>> Definition) {
 	for (map<string, map<string, string>>::iterator ii = Definition.begin(); ii != Definition.end(); ++ii)
@@ -57,19 +57,19 @@ void printDefinitions(map<string, string> Definition) {
 	}
 
 }
-void readfile() {
+void readfile(int chunk) {
 	string STRING;
 	ifstream infile;
 	infile.open("names.txt");
-	string users[4];
+	string *users=new string[chunk];
 	int usercount = 0;
 	while (!infile.eof()) // To get you all the lines.
 	{
-		if (usercount <= 3) {
+		if (usercount <= chunk-1) {
 			getline(infile, STRING);
 			users[usercount] = STRING;
 			usercount++;
-			if (usercount == 4) {
+			if (usercount == chunk) {
 				printDefinitions(readChunk(users, 4));
 				usercount = 0;
 			}
@@ -80,7 +80,53 @@ void readfile() {
 		 // Prints our STRING.
 	}
 	infile.close();
-	system("pause");
+}
+template <typename Map>
+bool compare_Record(Map const &lhs, Map const &rhs) {
+	// No predicate needed because there is operator== for pairs already.
+	return equal(lhs.begin(), lhs.end(),
+			rhs.begin());
+}
+
+void update(map<string,string> originalrecord, map<string, string> updaterecord,const int chunk) {
+	/* due to OS limitations its not possible to update a file without actually rewriting the entire file, 
+	or the changes should be of the same bitecount to actually do a successful write to the perticular part only
+	since this is almost never the case a simpler approach is taken, An actual DB would be a better way to go
+	since its not part of the syllabus yet this seems the best approach at the time*/
+	string STRING;
+	ifstream infile;
+	ofstream ofile;;
+	infile.open("names.txt");
+	ofile.open("updating.txt");
+	string *txtlines= new string[chunk];;
+	int linecount = 0;
+	while (!infile.eof()) // To get you all the lines.
+	{
+		if (linecount <= chunk-1) {
+			getline(infile, STRING);
+			txtlines[linecount] = STRING;
+			linecount++;
+			if (linecount == chunk) {
+				map <string, string> storedrecord = readChunk(txtlines, chunk);
+				if (compare_Record(storedrecord, originalrecord)) {
+					writeChunk(updaterecord, ofile);
+				}
+				else {
+					writeChunk(storedrecord, ofile);
+				}
+				linecount = 0;
+			}
+		}
+
+		// Saves the line in STRING.
+
+		// Prints our STRING.
+	}
+	infile.close();
+	ofile.close();
+}
+void search(string keywords) {
+
 }
 /*
 bool Create(map<string, string> Record, string collectionName) {

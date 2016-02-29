@@ -9,5 +9,5 @@
 using namespace std;
 
 map <string, string> readChunk(string lines[], int length);
-
+void writeChunk(map<string, string> record, ofstream &outputfile);
 #endif

@@ -6,7 +6,14 @@ void main()
 	//initializeDefinitions();
 	
 	//printDefinitions(getDefinitions("User"));
-	readfile();
-	valPhone("0777790838");
+	map<string, string> originalrecord = {
+		{ "user","xueyz" },
+		{ "password" , "MEWEEOW#$#@#" }
+	};
+	map<string, string> updaterecord = {
+		{"user","Dasith"},
+	    {"password" , "MEWEEOW#$#@#"}
+	};
+	update(originalrecord,updaterecord);
 	system("Pause");
 }
