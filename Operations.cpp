@@ -5,11 +5,15 @@ void CRUD(string instruction) {
 
 }
 */
+map <int, map<string,string>> config = readfile("./storage/config/user.config", 4);
+
 map <string, map<string, string>> RecordDefinitions;
 map <string, map<string, string>> getDefinitions() {
 	
 		return RecordDefinitions;
-	
+}
+map <string, string> getConfig(string args) {
+	return config[0];
 }
 map <string, string> getDefinitions(string def) {
 		return RecordDefinitions[def];
@@ -40,7 +44,7 @@ void initializeDefinitions() {
 	RecordDefinitions["User"] = userDefinition();
 	RecordDefinitions["Inquiry"] = inquiryDefinition();
 }
-void printDefinitions(map<string,map<string, string>> Definition) {
+void printRecord(map<string,map<string, string>> Definition) {
 	for (map<string, map<string, string>>::iterator ii = Definition.begin(); ii != Definition.end(); ++ii)
 	{		
 		cout << (*ii).first << ": " << endl;
@@ -50,19 +54,21 @@ void printDefinitions(map<string,map<string, string>> Definition) {
 	}
 
 }
-void printDefinitions(map<string, string> Definition) {
+void printRecord(map<string, string> Definition) {
 	for (map<string, string>::iterator ii = Definition.begin(); ii != Definition.end(); ++ii)
 	{
 		cout << (*ii).first << ": " <<(*ii).second<< endl;	
 	}
 
 }
-void readfile(int chunk) {
+map<int, map<string, string>> readfile(string location,int chunk) {
 	string STRING;
 	ifstream infile;
-	infile.open("names.txt");
+	infile.open(location);
 	string *users=new string[chunk];
 	int usercount = 0;
+	int recordcount = 0;
+	map<int, map<string, string>> returnMap;
 	while (!infile.eof()) // To get you all the lines.
 	{
 		if (usercount <= chunk-1) {
@@ -70,8 +76,9 @@ void readfile(int chunk) {
 			users[usercount] = STRING;
 			usercount++;
 			if (usercount == chunk) {
-				printDefinitions(readChunk(users, 4));
+				returnMap[recordcount]=readChunk(users, chunk);
 				usercount = 0;
+				recordcount++;
 			}
 		}
 		
@@ -80,6 +87,7 @@ void readfile(int chunk) {
 		 // Prints our STRING.
 	}
 	infile.close();
+	return returnMap;
 }
 template <typename Map>
 bool compare_Record(Map const &lhs, Map const &rhs) {

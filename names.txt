@@ -1,6 +1,6 @@
 {
-'user ee':'xyz',
-'password':'DKWAEJDSEWEWEWEW#@'
+'location.schema':'./storage/schema/inquiry.jlschema',
+'location.data':'./storage/data/inquiry.data'
 },
 {
 'user':'xueyz',

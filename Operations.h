@@ -13,9 +13,10 @@ using namespace std;
 map <string, map<string, string>> getDefinitions();
 map <string, string> getDefinitions(string def);
 void initializeDefinitions();
-void printDefinitions(map<string, map<string, string>> Definition);
-void printDefinitions(map<string, string> Definition);
+void printRecord(map<string, map<string, string>> Definition);
+void printRecord(map<string, string> Definition);
 map <string, string> userDefinition();
-void readfile(int chunk = 4);
+map<int, map<string, string>> readfile(string location,int chunk = 4);
+map <string, string> getConfig(string args);
 void update(map<string, string> originalrecord, map<string, string> updaterecord, const int chunk = 4);
 #endif
