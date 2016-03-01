@@ -1,20 +1,13 @@
-#include "Validation.h"
-#include "Operations.h"
+#include "Navigator.h"
 using namespace std;
 void main()
 {
 	//initializeDefinitions();
 	
 	//printDefinitions(getDefinitions("User"));
-	//map<string, string> originalrecord = {
-	//	{ "user","xueyz" },
-	//	{ "password" , "MEWEEOW#$#@#" }
-	//};
-	//map<string, string> updaterecord = {
-	//	{"user","Dasith"},
-	//    {"password" , "MEWEEOW#$#@#"}
-	//};
-	//update(originalrecord,updaterecord);
-	printRecord(getConfig("d"));
+	
+	navigateMainMenu("e");
+	//update(originalrecord,updaterecord, loc);
+	//printRecord();
 	system("Pause");
 }

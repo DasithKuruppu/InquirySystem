@@ -7,16 +7,20 @@
 #include <map>
 #include <utility>
 #include <fstream>
+#include <cstdio>
+#include <ctime>
 
 
 using namespace std;
-map <string, map<string, string>> getDefinitions();
-map <string, string> getDefinitions(string def);
-void initializeDefinitions();
+void Initialize();
 void printRecord(map<string, map<string, string>> Definition);
 void printRecord(map<string, string> Definition);
-map <string, string> userDefinition();
+void printRecord(map<int, map<string, string>> Definition);
 map<int, map<string, string>> readfile(string location,int chunk = 4);
+map<string, string> readALL(string location);
 map <string, string> getConfig(string args);
-void update(map<string, string> originalrecord, map<string, string> updaterecord, const int chunk = 4);
+map <string, string> getSchema(string args);
+void update(map<string, string> originalrecord, map<string, string> updaterecord,string location,int chunk = 4);
+void Addrecord(map<string, string> newrecord, string location, int chunk);
+void logger(string message, clock_t opstarttime, clock_t opendtime);
 #endif

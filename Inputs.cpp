@@ -1,22 +1,21 @@
 #include "Inputs.h"
-void createField(string Field) {
-	cout << Field + " :";
-}
 
 string getInput(string Field,string subtype) {
 	string Fielddata;
-	createField(Field);
-	cin >> Fielddata;
-	cout << endl;
+	cout << Field + " :";
+	getline(cin, Fielddata);
 	return Fielddata;
 }
-int getInput(string Field) {
-	int Fielddata;
-	createField(Field);
-	cin >> Fielddata;
-	cout << endl;
-	return Fielddata;
+
+map<string,string> getInquiry(map<string,string> schema) {
+	map<string, string> record;
+	for (map<string, string>::iterator definition = schema.begin(); definition != schema.end(); ++definition) {
+		
+		record[(*definition).first]=getInput((*definition).first,(*definition).second); // get inputs for each field
+	}
+	return record;
 }
+
 
 
 string PhoneNumberHelp(char inquiry) {

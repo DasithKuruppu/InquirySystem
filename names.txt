@@ -1,8 +1,0 @@
-{
-'location.schema':'./storage/schema/inquiry.jlschema',
-'location.data':'./storage/data/inquiry.data'
-},
-{
-'user':'xueyz',
-'password':'MEWEEOW#$#@#'
-}

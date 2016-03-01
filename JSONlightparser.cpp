@@ -17,12 +17,12 @@ map <string, string> readChunk(string lines[],int length) {
 			
 
 			//R"('([^\/\\\}]+)':'([^\/\\\}]+)',?/)"
-			bool x = regex_match(line, m, regex{ R"(\s+'([\w\s\.]+)':'([\w#@$\s\/\\\.]+)',?)" });
+			bool x = regex_match(line, m, regex{ R"(\s*'([\w\s\.]+)':'([\w#@$\d\s\/\\\.-]+)',?)" });
 			if (x) {
 				returnObj[m[1]] = m[2];
 			}
 			else {
-				throw std::runtime_error("Match failed in line " + to_string(i) + " '{'");
+				throw runtime_error("Match failed in line " + to_string(i));
 			}
 		}
 

@@ -1,8 +1,0 @@
-{
-'password':'DKWAEJDSEWEWEWEW#@'
-'user ee':'xyz'
-},
-{
-'password':'MEWEEOW#$#@#'
-'user':'Dasith'
-},

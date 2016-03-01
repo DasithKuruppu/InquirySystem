@@ -1,4 +1,0 @@
-{
-    'location.schema':'./storage/schema/user.jlschema',
-    'location.data':'./storage/data/user.data'
-}

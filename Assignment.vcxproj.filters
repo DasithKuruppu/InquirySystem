@@ -30,6 +30,9 @@
     <ClCompile Include="JSONlightparser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Navigator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Validation.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="JSONlightparser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Navigator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

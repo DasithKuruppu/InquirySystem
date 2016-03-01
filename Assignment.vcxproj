@@ -22,12 +22,14 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Inputs.cpp" />
     <ClCompile Include="JSONlightparser.cpp" />
+    <ClCompile Include="Navigator.cpp" />
     <ClCompile Include="Operations.cpp" />
     <ClCompile Include="Validation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Inputs.h" />
     <ClInclude Include="JSONlightparser.h" />
+    <ClInclude Include="Navigator.h" />
     <ClInclude Include="Operations.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Validation.h" />

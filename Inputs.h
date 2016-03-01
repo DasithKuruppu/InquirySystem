@@ -2,6 +2,8 @@
 #define Inputs
 #include<iostream>
 #include<string>
-
+#include <map>
 using namespace std;
+
+map<string, string> getInquiry(map<string, string> schema);
 #endif
