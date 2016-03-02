@@ -4,6 +4,9 @@ string getInput(string Field,string subtype) {
 	string Fielddata;
 	cout << Field + " :";
 	getline(cin, Fielddata);
+	if (subtype == "string.phoneno"){
+
+	}
 	return Fielddata;
 }
 
