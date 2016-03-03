@@ -68,6 +68,36 @@ void printRecord(map<string, string> Definition) {
 	}
 
 }
+void signup(map <string, string> info) {
+	info["password"] = generatehash(info["password"]);
+	Addrecord(info, getConfig("user")["location.data"], 5);
+	
+}
+bool login(map<string, string> logindata) {
+	logindata["password"] = generatehash(logindata["password"]);
+	if (findWhere(logindata, getConfig("user")["location.data"], 5).size() > 0) {
+		return true;
+	}
+	return false;
+}
+string generatehash(string& pw) {
+	
+	static const char* const lut = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@.&$";
+	size_t len = pw.length();
+
+	std::string output;
+	output.reserve(4 * len);
+	for (size_t i = 0; i < len; ++i)
+	{
+		const unsigned char c = pw[i];
+	
+		output.push_back(lut[c >> 8]);
+		output.push_back(lut[c & 31]);
+	}
+	output = output.substr(0, 15);
+	return output;
+}
+
 map<int, map<string, string>> readfile(string location,int chunk) {
 	string STRING;
 	ifstream infile;
@@ -166,9 +196,49 @@ void update(map<string,string> originalrecord, map<string, string> updaterecord,
 	else {
 		throw runtime_error("Error Updating file");
 	}
-	
-	
 
+}
+bool queryMap(map<string, string> query, map<string, string> record) {
+	for (map<string, string>::iterator ii = query.begin(); ii != query.end(); ++ii)
+	{
+		if (record[(*ii).first] != (*ii).second) {
+			return false;
+		}
+
+	}
+	return true;
+
+}
+map<string,string> findWhere(map<string,string> queryobj,string location,int chunk){
+	string STRING;
+	ifstream infile;
+	ofstream ofile;
+	infile.open(location);
+	
+	string *txtlines = new string[chunk];;
+	int linecount = 0;
+	while (!infile.eof()) // To get you all the lines.
+	{
+		if (linecount <= chunk - 1) {
+			getline(infile, STRING);
+			txtlines[linecount] = STRING;
+			linecount++;
+			if (linecount == chunk) {
+				map <string, string> storedrecord = readChunk(txtlines, chunk);
+				if (queryMap(queryobj, storedrecord)) {
+					infile.close();
+					ofile.close();
+					return storedrecord;
+				}
+				linecount = 0;
+			}
+		}
+	}
+
+	infile.close();
+	ofile.close();
+	return map<string, string>{};
+	
 }
 void search(string keywords,string location,int chunk) {
 

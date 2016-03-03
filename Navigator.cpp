@@ -2,7 +2,6 @@
 
 void navigateMainMenu(string commands) {
 	system("cls");
-	Initialize();
 	MainMenu();
 	cout << "Sub-menu number you wish to enter to :";
 	string action;
@@ -20,11 +19,26 @@ void navigateMainMenu(string commands) {
 	if (action == "1") {
 		system("cls");
 		cout << "Add new Inquiry :" << endl;
-		map <string, string> schemainq = getInquiry(getSchema("inquiry"));
+		map <string, string> schemainq;
+		bool errflag = false;
+		try {
+			schemainq = getRecords(getSchema("inquiry"));
+		}	
+		catch (map<string,string> e) {
+			errflag = true;
+			schemainq = e;
+		}
 		string inqloc = getConfig("inquiry")["location.data"];
-		Addrecord(schemainq,inqloc, 10);
 		system("cls");
-		cout << "Record added successfully !" << endl;
+		if (errflag) {
+			cout << "Adding record failed !" << endl;
+			printRecord(schemainq);
+		}
+		else {
+			Addrecord(schemainq, inqloc, 10);
+			cout << "Record added successfully !" << endl;
+		}
+
 
 		cout << endl << "Press 1 and Enter to get back to Main menu" << endl;
 		getline(cin, action);
@@ -43,6 +57,66 @@ void MainMenu() {
 	cout << "5. Delete Inquiry" << endl;
 	cout << "6. Help" << endl;
 
+}
+void LoginMenu() {
+	cout << "Welcome to Inquiry system - Login" << endl;
+	cout << "1. Login" << endl;
+	cout << "2. Signup" << endl;
+	cout << "Sub-menu number you wish to enter to :";
+	string action;
+	getline(cin, action);
+	Initialize();
+	if (action == "1") {
+		system("cls");
+		cout << "Log into Inquiry management system :" << endl;
+		map <string, string> usr;
+		bool errflag = false;
+		try {
+			usr = getRecords(getSchema("user"));
+		}
+		catch (map<string, string> e) {
+			errflag = true;
+			usr = e;
+		}
+		if (errflag) {
+			cout << "Error occured during login" << endl;
+
+		}
+		else {
+			if (login(usr)) {
+				cout << "successfully logged in !";
+				cout << "press any key for mainmenu";
+				string x;
+				cin >> x;
+				navigateMainMenu("e");
+			};
+		}
+	}
+	else if (action == "2") {
+		system("cls");
+		cout << "Signup into Inquiry management system :" << endl;
+
+		map <string, string> usr;
+		bool errflag = false;
+		try {
+			usr = getRecords(getSchema("user"));
+		}
+		catch (map<string, string> e) {
+			errflag = true;
+			usr = e;
+		}
+		if (errflag) {
+			cout << "Error occured during login" << endl;
+
+		}
+		else {
+			signup(usr);
+			cout << "User added!" << endl;
+			cout << "press any key to access main menu";
+			getchar();
+			navigateMainMenu("o");
+		}
+	}
 }
 
 void HelpMenu() {

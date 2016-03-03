@@ -11,4 +11,5 @@ using namespace std;
 void MainMenu();
 void HelpMenu();
 void navigateMainMenu(string commands);
+void LoginMenu();
 #endif

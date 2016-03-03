@@ -3,7 +3,12 @@
 #include<iostream>
 #include<string>
 #include <map>
+#include "Validation.h"
+#include <iomanip>
+#include <ctime>
 using namespace std;
 
-map<string, string> getInquiry(map<string, string> schema);
+map<string, string> getRecords(map<string, string> schema, vector<string> ignoreFields = { "Inquiry Number","Date" });
+bool ignoreFields(string field, vector<string> Fieldslist);
+string AutoIDgenerator();
 #endif

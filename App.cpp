@@ -1,4 +1,5 @@
 #include "Navigator.h"
+#include "Inputs.h"
 using namespace std;
 void main()
 {
@@ -6,8 +7,10 @@ void main()
 	
 	//printDefinitions(getDefinitions("User"));
 	
-	navigateMainMenu("e");
-	//update(originalrecord,updaterecord, loc);
-	//printRecord();
+	
+		//update(originalrecord,updaterecord, loc);
+		//printRecord();
+
+		LoginMenu();
 	system("Pause");
 }

@@ -13,14 +13,18 @@
 
 using namespace std;
 void Initialize();
+void signup(map <string, string> info);
+bool login(map<string, string> logindata);
 void printRecord(map<string, map<string, string>> Definition);
 void printRecord(map<string, string> Definition);
 void printRecord(map<int, map<string, string>> Definition);
 map<int, map<string, string>> readfile(string location,int chunk = 4);
+string generatehash(string& pw);
 map<string, string> readALL(string location);
 map <string, string> getConfig(string args);
 map <string, string> getSchema(string args);
 void update(map<string, string> originalrecord, map<string, string> updaterecord,string location,int chunk = 4);
 void Addrecord(map<string, string> newrecord, string location, int chunk);
+map<string, string> findWhere(map<string, string> queryobj, string location, int chunk);
 void logger(string message, clock_t opstarttime, clock_t opendtime);
 #endif

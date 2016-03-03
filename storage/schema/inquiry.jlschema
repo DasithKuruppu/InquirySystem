@@ -1,10 +1,10 @@
 {
 'Address':'No 1A hirana paranadura',
 'Age':'17',
-'Date':'01/01/2019',
-'Date of Birth':'03/01/2014',
+'Date':'system.datetime',
+'Date of Birth':'string.bday',
 'Inquirer Name':'Saul',
-'Inquiry Number':'004',
+'Inquiry Number':'system.number',
 'Qualification':'Nothing',
-'Telephone No':'00330303'
+'Telephone No':'string.phoneno'
 },
