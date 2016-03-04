@@ -5,6 +5,8 @@
 
 map <string, map<string,string>> config;
 map <string, map<string, string>> schema;
+userstatus ustatus;
+
 
 map <string, string> getConfig(string args) {
 	return config[args];
@@ -13,6 +15,9 @@ map <string, string> getSchema(string args) {
 	return schema[args];
 }
 
+userstatus currentuser() {
+	return ustatus;
+}
 void Initialize() {
 	// load initial configs
 	clock_t starttime = clock();
@@ -75,10 +80,10 @@ void signup(map <string, string> info) {
 }
 bool login(map<string, string> logindata) {
 	logindata["password"] = generatehash(logindata["password"]);
-	if (findWhere(logindata, getConfig("user")["location.data"], 5).size() > 0) {
-		return true;
-	}
-	return false;
+	ustatus.setUser(findWhere(logindata, getConfig("user")["location.data"], 5));
+
+	
+	return ustatus.isLoggedin();
 }
 string generatehash(string& pw) {
 	
@@ -195,6 +200,48 @@ void update(map<string,string> originalrecord, map<string, string> updaterecord,
 	}
 	else {
 		throw runtime_error("Error Updating file");
+	}
+
+}
+void deleteRecord(map<string, string> Deleterecord, string location, const int chunk) {
+	/* due to OS limitations its not possible to update a file without actually rewriting the entire file,
+	or the changes should be of the same bitecount to actually do a successful write to the perticular part only
+	since this is almost never the case a simpler approach is taken, An actual DB would be a better way to go
+	since its not part of the syllabus yet this seems the best approach at the time*/
+	string STRING;
+	ifstream infile;
+	ofstream ofile;
+	infile.open(location);
+	ofile.open(location + "temp");
+	string *txtlines = new string[chunk];;
+	int linecount = 0;
+	while (!infile.eof()) // To get you all the lines.
+	{
+		if (linecount <= chunk - 1) {
+			getline(infile, STRING);
+			txtlines[linecount] = STRING;
+			linecount++;
+			if (linecount == chunk) {
+				map <string, string> storedrecord = readChunk(txtlines, chunk);
+				if (!compare_Record(storedrecord, Deleterecord)) {
+					writeChunk(storedrecord, ofile);
+				}
+				else {
+					writeChunk(storedrecord, ofile);
+				}
+				linecount = 0;
+			}
+		}
+	}
+	infile.close();
+	ofile.close();
+	if (remove(location.c_str()) == 0) {
+		if (rename((location + "temp").c_str(), location.c_str()) != 0) {
+			throw runtime_error("Error Deleting file");
+		}
+	}
+	else {
+		throw runtime_error("Error Deleting file");
 	}
 
 }

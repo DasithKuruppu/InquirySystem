@@ -53,8 +53,9 @@ map<string, string> getRecords(map<string, string> schema, vector<string> ignore
 				errstack[(*definition).first] = e.what();
 				
 			}
-			record[(*definition).first] = data;
-			
+			if (data != "") {
+				record[(*definition).first] = data;
+			}
 		
 		 // get inputs for each field
 	}

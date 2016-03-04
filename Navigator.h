@@ -8,6 +8,7 @@
 #include "Operations.h"
 #include "Inputs.h"
 using namespace std;
+
 void MainMenu();
 void HelpMenu();
 void navigateMainMenu(string commands);

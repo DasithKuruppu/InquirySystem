@@ -1,5 +1,7 @@
 #include "Navigator.h"
+#include "Models.h";
 
+userModel loggedinuser(map<string, string>{});
 void navigateMainMenu(string commands) {
 	system("cls");
 	MainMenu();
@@ -49,74 +51,77 @@ void navigateMainMenu(string commands) {
 }
 
 void MainMenu() {
+	unsigned int mno= 0;
 	cout << "Welcome to Inquiry system- ESOFT"<<endl;
-	cout << "1. Add Inquiry" << endl;
-	cout << "2. Update Inquiry" << endl;
-	cout << "3. Search Inquiry" << endl;
-	cout << "4. Display Inquiry" << endl;
-	cout << "5. Delete Inquiry" << endl;
-	cout << "6. Help" << endl;
-
+	cout << to_string(mno)+". Add Inquiry" << endl;
+	cout << to_string(++mno)+". Update Inquiry" << endl;
+	cout << to_string(++mno)+". Search Inquiry" << endl;
+	cout << to_string(++mno)+". Display Inquiry" << endl;
+	cout << to_string(++mno) + ". Delete Inquiry" << endl;
+	if (currentuser().isLoggedin() & (currentuser().user["type"] == "Admin" | currentuser().user["type"] == "admin")) {
+		cout << to_string(++mno) + ". User Config" << endl;
+	}
+	cout << to_string(++mno) + ". Options" << endl;
+	cout << to_string(++mno) + ". Help" << endl;
+	cout << to_string(++mno) + ". Quit" << endl;
 }
 void LoginMenu() {
+	system("cls");
+	
 	cout << "Welcome to Inquiry system - Login" << endl;
-	cout << "1. Login" << endl;
-	cout << "2. Signup" << endl;
-	cout << "Sub-menu number you wish to enter to :";
-	string action;
-	getline(cin, action);
-	Initialize();
-	if (action == "1") {
-		system("cls");
-		cout << "Log into Inquiry management system :" << endl;
-		map <string, string> usr;
-		bool errflag = false;
-		try {
-			usr = getRecords(getSchema("user"));
-		}
-		catch (map<string, string> e) {
-			errflag = true;
-			usr = e;
-		}
-		if (errflag) {
-			cout << "Error occured during login" << endl;
-
-		}
-		else {
-			if (login(usr)) {
-				cout << "successfully logged in !";
-				cout << "press any key for mainmenu";
-				string x;
-				cin >> x;
-				navigateMainMenu("e");
-			};
-		}
-	}
-	else if (action == "2") {
-		system("cls");
-		cout << "Signup into Inquiry management system :" << endl;
-
-		map <string, string> usr;
-		bool errflag = false;
-		try {
-			usr = getRecords(getSchema("user"));
-		}
-		catch (map<string, string> e) {
-			errflag = true;
-			usr = e;
-		}
-		if (errflag) {
-			cout << "Error occured during login" << endl;
-
-		}
-		else {
-			signup(usr);
-			cout << "User added!" << endl;
-			cout << "press any key to access main menu";
+	if (!currentuser().isLoggedin()) {
+		cout << "Signin to enter main menu :" << endl;		
+		userModel newUser(getRecords(userModel::schema, vector<string>{ "type" }));
+		genericResult signinResult=newUser.signIn();
+	
+	
+		if (signinResult.success) {
+			cout << "Successfully logged in ! - /n Press any key to enter" << endl;
 			getchar();
-			navigateMainMenu("o");
+			MainMenu();
+		}
+		else {
+			cout << "login attemp failed ! /n Press any key to retry" <<endl;
+			cout << signinResult.message << endl;
+			getchar();
+			LoginMenu();
+
 		}
 	}
+	
+}
+
+void  userConfigMenu() {
+	system("cls");
+	cout << "User Config :" << endl;
+	char action = '1';
+	/*switch (action) {
+	case '1':
+
+
+
+	}*/
+
+	/*map <string, string> usr;
+	bool errflag = false;
+	try {
+		usr = getRecords(getSchema("user"));
+	}
+	catch (map<string, string> e) {
+		errflag = true;
+		usr = e;
+	}
+	if (errflag) {
+		cout << "Error occured when adding user" << endl;
+
+	}
+	else {
+		signup(usr);
+		cout << "User added!" << endl;
+		cout << "press any key to access main menu";
+		getchar();
+		navigateMainMenu("o");
+	}*/
 }
 
 void HelpMenu() {

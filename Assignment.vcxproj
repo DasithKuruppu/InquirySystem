@@ -22,6 +22,7 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Inputs.cpp" />
     <ClCompile Include="JSONlightparser.cpp" />
+    <ClCompile Include="Models.cpp" />
     <ClCompile Include="Navigator.cpp" />
     <ClCompile Include="Operations.cpp" />
     <ClCompile Include="Validation.cpp" />
@@ -29,6 +30,7 @@
   <ItemGroup>
     <ClInclude Include="Inputs.h" />
     <ClInclude Include="JSONlightparser.h" />
+    <ClInclude Include="Models.h" />
     <ClInclude Include="Navigator.h" />
     <ClInclude Include="Operations.h" />
     <ClInclude Include="resource.h" />
