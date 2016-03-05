@@ -10,5 +10,3 @@ map<int, map<string, string>>  userModel::getRecords() {
 	return readfile(getConfig("user")["location.data"], userModel::chunksize);
 }
 
-
-

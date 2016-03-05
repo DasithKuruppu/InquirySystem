@@ -1,5 +1,5 @@
 #include "Navigator.h"
-#include "Models.h";
+#include "Models.h"
 
 userModel loggedinuser(map<string, string>{});
 void navigateMainMenu(string commands) {
@@ -51,12 +51,14 @@ void navigateMainMenu(string commands) {
 }
 
 void MainMenu() {
-	unsigned int mno= 0;
-	cout << "Welcome to Inquiry system- ESOFT"<<endl;
-	cout << to_string(mno)+". Add Inquiry" << endl;
-	cout << to_string(++mno)+". Update Inquiry" << endl;
-	cout << to_string(++mno)+". Search Inquiry" << endl;
-	cout << to_string(++mno)+". Display Inquiry" << endl;
+	system("cls");
+	int menuid = 0;
+	unsigned int mno = 0;
+	cout << "Welcome to Inquiry system- ESOFT" << endl;
+	cout << to_string(mno) + ". Add Inquiry" << endl;
+	cout << to_string(++mno) + ". Update Inquiry" << endl;
+	cout << to_string(++mno) + ". Search Inquiry" << endl;
+	cout << to_string(++mno) + ". Display Inquiry" << endl;
 	cout << to_string(++mno) + ". Delete Inquiry" << endl;
 	if (currentuser().isLoggedin() & (currentuser().user["type"] == "Admin" | currentuser().user["type"] == "admin")) {
 		cout << to_string(++mno) + ". User Config" << endl;
@@ -64,7 +66,15 @@ void MainMenu() {
 	cout << to_string(++mno) + ". Options" << endl;
 	cout << to_string(++mno) + ". Help" << endl;
 	cout << to_string(++mno) + ". Quit" << endl;
+	cin >> menuid;
+	switch (menuid) {
+	case 5: {
+		userConfigMenu();
+	}
+	}
+
 }
+	
 void LoginMenu() {
 	system("cls");
 	
@@ -76,12 +86,12 @@ void LoginMenu() {
 	
 	
 		if (signinResult.success) {
-			cout << "Successfully logged in ! - /n Press any key to enter" << endl;
+			cout << "Successfully logged in ! - \nPress any key to enter" << endl;
 			getchar();
 			MainMenu();
 		}
 		else {
-			cout << "login attemp failed ! /n Press any key to retry" <<endl;
+			cout << "login attemp failed ! \nPress any key to retry" <<endl;
 			cout << signinResult.message << endl;
 			getchar();
 			LoginMenu();
@@ -93,35 +103,56 @@ void LoginMenu() {
 
 void  userConfigMenu() {
 	system("cls");
-	cout << "User Config :" << endl;
-	char action = '1';
-	/*switch (action) {
-	case '1':
+	cout << "<<USER Management>>" << endl;
+	if (!currentuser().isLoggedin()) {
+		unsigned int mno = 0;
+		
+		cout << to_string(mno) + ". Add User" << endl;
+		cout << to_string(++mno) + ". Delete User" << endl;
+		cout << to_string(++mno) + ". Main Menu" << endl;
+		cout << to_string(++mno) + ".Quit" << endl;
+		cout << "Enter your selection 0.."+to_string(mno)+" for the relevent task" << endl;
+		cin >> mno;
+		switch (mno) {
+			case 0: {
+				map<string, string> newuserinp = getRecords(userModel::schema);
+				genericResult actionresult = userModel::addUser(newuserinp);
+				if (actionresult.success) {
+					cout << "Successfully added a new user!" << endl;
+					cout << "Press any key to go back to previous menu" << endl;
+					getchar();
+					userConfigMenu();
+				}
+				else {
+					cout << "Creating new user failed !" << endl;
+					cout << actionresult.message << endl;
+				}
 
+				break;
 
+		}
+			
+		case 1: {
+			map<string, string> deleteusr = getRecords(userModel::schema, vector<string>{"password", "type"});
+			genericResult actionresult = userModel::addUser(deleteusr);
+			userModel::removeUser(deleteusr);
+			if (actionresult.success) {
+				cout << "Successfully added a new user!" << endl;
 
-	}*/
+			}
+			else {
+				cout << "Delete failed !" << endl;
+				cout << actionresult.message << endl;
 
-	/*map <string, string> usr;
-	bool errflag = false;
-	try {
-		usr = getRecords(getSchema("user"));
+			}
+		}
 	}
-	catch (map<string, string> e) {
-		errflag = true;
-		usr = e;
+		
 	}
-	if (errflag) {
-		cout << "Error occured when adding user" << endl;
 
-	}
-	else {
-		signup(usr);
-		cout << "User added!" << endl;
-		cout << "press any key to access main menu";
-		getchar();
-		navigateMainMenu("o");
-	}*/
+	cout << "Press any key to go back to previous menu" << endl;
+	getchar();
+	userConfigMenu();
 }
 
 void HelpMenu() {

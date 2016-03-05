@@ -71,6 +71,7 @@ void printRecord(map<string, string> Definition) {
 	{
 		cout << (*ii).first << ": " <<(*ii).second<< endl;	
 	}
+	
 
 }
 void signup(map <string, string> info) {

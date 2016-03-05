@@ -13,4 +13,5 @@ void MainMenu();
 void HelpMenu();
 void navigateMainMenu(string commands);
 void LoginMenu();
+void userConfigMenu();
 #endif
