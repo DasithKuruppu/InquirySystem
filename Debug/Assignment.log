@@ -1,4 +1,3 @@
 ﻿  Operations.cpp
-c:\users\dasith\development\assignment\operations.cpp(87): warning C4333: '>>': right shift by too large amount, data loss
-c:\users\dasith\development\assignment\operations.cpp(219): warning C4715: 'findWhere': not all control paths return a value
+c:\users\dasith\development\assignment\operations.cpp(101): warning C4333: '>>': right shift by too large amount, data loss
   Assignment.vcxproj -> C:\Users\Dasith\Development\Assignment\Debug\Assignment.exe

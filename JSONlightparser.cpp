@@ -17,7 +17,7 @@ map <string, string> readChunk(string lines[],int length) {
 			
 
 			//R"('([^\/\\\}]+)':'([^\/\\\}]+)',?/)"
-			bool x = regex_match(line, m, regex{ R"(\s*'([\w\s\.]+)':'([\w#@$\d\s\/\\\.-]+)',?)" });
+			bool x = regex_match(line, m, regex{ R"(\s*'([\w\s\.]+)':'(([\w#@$\d\s\/\\\.\,-]+)?)',?)" });
 			if (x) {
 				returnObj[m[1]] = m[2];
 			}

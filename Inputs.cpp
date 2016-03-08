@@ -1,32 +1,33 @@
 #include "Inputs.h"
 bool ignoreFields(string field,vector<string> Fieldslist) {
-	for (int i = 0;i < Fieldslist.size();i++) {
+	for (unsigned int i = 0;i < Fieldslist.size();i++) {
 		if (field == Fieldslist[i]) {
 			return true;
 		}
 	}
 	return false;
 }
-string getInput(string Field,string subtype,vector<string> ignore) {
+string getInput(string Field, string subtype, vector<string> ignore, bool validate=false) {
 	string Fielddata;
 	if (!ignoreFields(Field,ignore)) {
 		cout << Field + " : ";
+		
 		getline(cin, Fielddata);
 	}
 	
-	if (subtype == "string.phoneno"){
+	if (validate && subtype == "string.phoneno"){
 		bool strph = valPhone(Fielddata);
 		if (!strph) {
 			throw invalid_argument("Phone number entered is invalid");
 		}
 	}
-	else if (subtype == "system.datetime") {
+	else if (validate && subtype == "system.datetime") {
 		auto t = std::time(nullptr);
 		auto tm = *std::localtime(&t);
 		put_time(&tm, "%d-%m-%Y %H-%M-%S");
 		Fielddata = to_string(tm.tm_wday) + "/" + to_string(tm.tm_mon) + "/" + to_string(1900 + tm.tm_year) +" " + to_string(tm.tm_hour) + "-"+to_string(tm.tm_min)+"-"+to_string(tm.tm_sec);
 	}
-	else if (subtype == "system.number") {
+	else if (validate && subtype == "system.number") {
 		Fielddata = AutoIDgenerator();
 	}
 	
@@ -40,22 +41,22 @@ string AutoIDgenerator() {
 	return (to_string(tm.tm_sec + tm.tm_min*(60)+(tm.tm_mon*744))+to_string(clocktime));
 }
 
-map<string, string> getRecords(map<string, string> schema, vector<string> ignoreFields) {
+map<string, string> getRecords(map<string, string> schema, vector<string> ignoreFields,bool validate) {
 	map<string, string> record;
 	map<string, string> errstack;
 	for (map<string, string>::iterator definition = schema.begin(); definition != schema.end(); ++definition) {
 		string data="";
 		
 			try {
-				data = getInput((*definition).first, (*definition).second,ignoreFields);
+				data = getInput((*definition).first, (*definition).second,ignoreFields,validate);
 			}
 			catch (invalid_argument& e) {
 				errstack[(*definition).first] = e.what();
 				
 			}
-			if (data != "") {
+			
 				record[(*definition).first] = data;
-			}
+			
 		
 		 // get inputs for each field
 	}

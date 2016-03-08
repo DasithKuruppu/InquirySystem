@@ -11,5 +11,6 @@
 using namespace std;
 
 bool valPhone(string phoneno);
+bool valDateTime(const std::string& s);
 
 #endif

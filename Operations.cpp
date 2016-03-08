@@ -81,6 +81,7 @@ void signup(map <string, string> info) {
 }
 bool login(map<string, string> logindata) {
 	logindata["password"] = generatehash(logindata["password"]);
+	logindata.erase("type");
 	ustatus.setUser(findWhere(logindata, getConfig("user")["location.data"], 5));
 
 	
@@ -288,10 +289,49 @@ map<string,string> findWhere(map<string,string> queryobj,string location,int chu
 	return map<string, string>{};
 	
 }
-void search(string keywords,string location,int chunk) {
+map<int,map<string, string>> searchRecords(map<string, string> queryobj, string location, int chunk) {
+	string STRING;
+	ifstream infile;
+	ofstream ofile;
+	infile.open(location);
+	map<int, map<string, string>> Results = {};
+	string *txtlines = new string[chunk];;
+	int linecount = 0;
+	unsigned int recordcount = 0;
+	while (!infile.eof()) // To get you all the lines.
+	{
+		if (linecount <= chunk - 1) {
+			getline(infile, STRING);
+			txtlines[linecount] = STRING;
+			linecount++;
+			if (linecount == chunk) {
+
+				map <string, string> storedrecord = readChunk(txtlines, chunk);
+				if (queryMap(queryobj, storedrecord)) {
+					Results[recordcount] = storedrecord;
+				}
+				linecount = 0;
+				recordcount++;
+			}
+		}
+	}
+
+	infile.close();
+	ofile.close();
+	return Results;
 
 }
+map<string, string> stripNullfields(map<string,string> record) {
+	map<string, string> strippedrecord;
+	for (map<string, string>::iterator ii = record.begin(); ii != record.end(); ++ii)
+	{
+		if ((*ii).second!="")  {
+			strippedrecord[(*ii).first] = (*ii).second;
+		}
 
+	}
+		return strippedrecord;
+}
 void Addrecord(map<string, string> newrecord,string location,int chunk) {
 	string STRING;
 	ofstream ofile;

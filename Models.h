@@ -51,15 +51,18 @@ struct userModel
 	}
 
 	genericResult save() {
-		map<string,string> findresult=findWhere(userModel::Data, userModel::location, userModel::chunksize);
 		genericResult returnresult;
-		if (findresult.size() == 0) {
+		map<string, string> search;
+		search["username"] = Data["username"];
+		search=findWhere(search, userModel::location, userModel::chunksize);		
+		Data["password"] = generatehash(Data["password"]);
+		if (search.size() == 0) {
 			Addrecord(userModel::Data, userModel::location, userModel::chunksize);
 			returnresult.success = true;
 		}
 		else {
-			returnresult.success = false;
-			returnresult.message = "Record already exists";
+			update(search, Data, userModel::location, userModel::chunksize);
+			returnresult.success = true;
 		}
 		return returnresult;
 		
@@ -84,20 +87,35 @@ struct userModel
 };
 
 struct inquiryModel {
-	static int chunksize;
-	static string location;
-	static map <string, string> schema;
+	static int chunksize; // Determines the length of each record
+	static string location; //Determines where to fetch the data from
+	static map <string, string> schema; // provides a 1:1 map of the fields : datatype to be used, data is then validated againt the schema
 
 	static genericResult addInquiry(map<string, string> data) {
-
+		map<string, string> findresult = findWhere(data, inquiryModel::location, inquiryModel::chunksize);
+		genericResult returnresult;
+		if (findresult.size() == 0) {
+			Addrecord(data, inquiryModel::location, inquiryModel::chunksize);
+			returnresult.success = true;
+		}
+		else {
+			returnresult.success = false;
+			returnresult.message = "Record already exists";
+		}
+		return returnresult;
 	}
 	static map<int, map<string, string>>  getRecords() {
-
+		return readfile(inquiryModel::location, inquiryModel::chunksize);
 	}
 	static map<string, string> findRecord(map<string, string> query) {
 		
 		return findWhere(query, inquiryModel::location, inquiryModel::chunksize);
 		
+	}
+	static map<int,map<string, string>> findRecords(map<string, string> query) {
+
+		return searchRecords(query, inquiryModel::location, inquiryModel::chunksize);
+
 	}
 	static genericResult removeRecord(map<string, string> remRecord) {
 		genericResult returnresult;
@@ -113,4 +131,19 @@ struct inquiryModel {
 		}
 
 	}
+	static void updateRecord(map <string,string> originalobj,map<string,string> uptatedobj) {
+		
+		for (map<string, string>::iterator ii = uptatedobj.begin(); ii != uptatedobj.end(); ++ii)
+			{
+				if ((*ii).second == "" | (*ii).second=="Date") {
+					uptatedobj[(*ii).first] = originalobj[(*ii).first];
+				}
+
+			}
+			
+
+		
+		update(originalobj, uptatedobj, inquiryModel::location, inquiryModel::chunksize);
+	}
+	
 };

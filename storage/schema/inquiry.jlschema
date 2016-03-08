@@ -1,6 +1,6 @@
 {
-'Address':'No 1A hirana paranadura',
-'Age':'17',
+'Address':'string',
+'Age':'string.int',
 'Date':'system.datetime',
 'Date of Birth':'string.bday',
 'Inquirer Name':'Saul',

@@ -11,7 +11,8 @@ void navigateMainMenu(string commands) {
 	if (action == "4") {
 		system("cls");
 		cout << "List of all Inquiries :" << endl;
-		printRecord(readfile(getConfig("inquiry")["location.data"],10));
+		map<int, map<string, string>> x = readfile(getConfig("inquiry")["location.data"], 10);
+		printRecord(x);
 		cout <<endl << "Press 1 and Enter to get back to Main menu" << endl;
 		getline(cin, action);
 		if (action == "1") {
@@ -55,49 +56,154 @@ void MainMenu() {
 	int menuid = 0;
 	unsigned int mno = 0;
 	cout << "Welcome to Inquiry system- ESOFT" << endl;
-	cout << to_string(mno) + ". Add Inquiry" << endl;
-	cout << to_string(++mno) + ". Update Inquiry" << endl;
-	cout << to_string(++mno) + ". Search Inquiry" << endl;
-	cout << to_string(++mno) + ". Display Inquiry" << endl;
-	cout << to_string(++mno) + ". Delete Inquiry" << endl;
+	cout << to_string(mno) + ". Add Inquiry" << endl; // 0
+	cout << to_string(++mno) + ". Update Inquiry" << endl; // 1
+	cout << to_string(++mno) + ". Search Inquiry" << endl; // 2
+	cout << to_string(++mno) + ". Display Inquiry" << endl; // 3
+	cout << to_string(++mno) + ". Delete Inquiry" << endl; // 4
 	if (currentuser().isLoggedin() & (currentuser().user["type"] == "Admin" | currentuser().user["type"] == "admin")) {
-		cout << to_string(++mno) + ". User Config" << endl;
+		cout << to_string(++mno) + ". User Config" << endl; //5
 	}
-	cout << to_string(++mno) + ". Options" << endl;
-	cout << to_string(++mno) + ". Help" << endl;
-	cout << to_string(++mno) + ". Quit" << endl;
+	cout << to_string(++mno) + ". Options" << endl; //6
+	cout << to_string(++mno) + ". Help" << endl; //7
+	cout << to_string(++mno) + ". Quit" << endl; //8
+	cout << "Enter Number of the task you wish to perform :";
 	cin >> menuid;
+	getchar();
+	system("cls");
 	switch (menuid) {
+	case 0: {
+		map<string, string> newinqinp = getRecords(inquiryModel::schema);
+		genericResult actionresult = inquiryModel::addInquiry(newinqinp);
+		if (actionresult.success) {
+			cout << "Successfully added a new Inquiry!" << endl;
+		
+		}
+		else {
+			cout << "Creating new inquiry failed !" << endl;
+			cout << actionresult.message << endl;
+
+		}
+		break;
+	}
+	case 1: {
+		char updateconfirm;
+		cout << "Enter the updated inquiry-(Note that inquiry number & date is not subject to be updated)" << endl;
+		map<string, string> inprecord;
+		try {
+			inprecord = getRecords(inquiryModel::schema, vector<string>{});
+		}
+		catch (map<string,string> e){
+			cout << "Following Errors occured when processing the inputs:" << endl;
+			printRecord(e);
+			cout << "Press any key to go to Main menu" << endl;
+			getchar();
+			MainMenu();
+		}
+		map<string, string> originalrecord;
+		originalrecord["Inquiry Number"] =inprecord["Inquiry Number"] ;
+		originalrecord = inquiryModel::findRecord(originalrecord);
+		inquiryModel::updateRecord(originalrecord, inprecord);
+		system("cls");
+		cout << endl;
+		cout << "Updated scuccesfully"<<endl;		
+		cin >> updateconfirm;	
+		cout << "Press any key to return to main menu";
+		getchar();
+		getchar();
+		MainMenu();
+	}
+	case 2: {
+		
+		cout << "Enter the details of the item you want to search, leave the ones you don't know blank" << endl;
+		map<string, string> inprecord;
+		try {
+			inprecord = getRecords(inquiryModel::schema, vector<string>{}, false);
+		}
+		catch (map<string, string> e) {
+			cout << "Following Errors occured when processing the inputs:" << endl;
+			printRecord(e);
+			cout << "Press any key to go to Main menu" << endl;
+			getchar();
+			MainMenu();
+		}
+		inprecord=stripNullfields(inprecord);
+		system("cls");
+		printRecord(inquiryModel::findRecords(inprecord));
+		cout << "Press any key to return to main menu";
+		getchar();
+		getchar();
+		MainMenu();
+	}
+	case 3: {
+		printRecord(inquiryModel::getRecords());
+		break;
+	}
 	case 5: {
 		userConfigMenu();
+		break;
 	}
 	}
-
+	cout << endl;
+	cout << endl;
+	cout << "Press any key to go back to previous menu" << endl;
+	getchar(); // previos carrage return
+	getchar();
+	MainMenu();
+	
 }
 	
 void LoginMenu() {
 	system("cls");
-	
+	char key;
 	cout << "Welcome to Inquiry system - Login" << endl;
-	if (!currentuser().isLoggedin()) {
-		cout << "Signin to enter main menu :" << endl;		
-		userModel newUser(getRecords(userModel::schema, vector<string>{ "type" }));
-		genericResult signinResult=newUser.signIn();
-	
-	
-		if (signinResult.success) {
-			cout << "Successfully logged in ! - \nPress any key to enter" << endl;
-			getchar();
-			MainMenu();
-		}
-		else {
-			cout << "login attemp failed ! \nPress any key to retry" <<endl;
-			cout << signinResult.message << endl;
-			getchar();
-			LoginMenu();
+	cout << "1. Login" << endl;
+	cout << "2. Reset Default config" << endl;
+	cout << "Select 1 or 2 to continue" << endl;
+	cin >> key;
+	getchar();
+	switch(key) {
+	case '1': {
+			if (!currentuser().isLoggedin()) {
+				system("cls");
+				cout << "Sign in to enter main menu :" << endl;
+				userModel newUser(getRecords(userModel::schema, vector<string>{ "type" }));
+				genericResult signinResult = newUser.signIn();
+
+
+				if (signinResult.success) {
+					cout << "Successfully logged in ! - \nPress any key to enter" << endl;
+					getchar();
+					MainMenu();
+				}
+				else {
+					cout << "login attemp failed ! \nPress any key to retry" << endl;
+					cout << signinResult.message << endl;
+					getchar();
+				
+					LoginMenu();
+
+				}
+			}
 
 		}
+	case '2': {
+		userModel user(map<string, string>{
+			{"username","Admin"},
+			{"password","Admin"},
+			{"type","Admin"}
+		});
+
+		user.save();
+		system("cls");
+		cout << "Admin info reset to defaults !, You may now login with default credentials to continue as admin" << endl;
+		
+		getchar();
+		LoginMenu();
+
+	 }
 	}
+	
 	
 }
 

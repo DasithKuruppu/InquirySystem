@@ -40,6 +40,8 @@ map <string, string> getSchema(string args);
 void update(map<string, string> originalrecord, map<string, string> updaterecord,string location,int chunk = 4);
 void Addrecord(map<string, string> newrecord, string location, int chunk);
 void deleteRecord(map<string, string> Deleterecord, string location, const int chunk);
+map<int, map<string, string>> searchRecords(map<string, string> queryobj, string location, int chunk);
 map<string, string> findWhere(map<string, string> queryobj, string location, int chunk);
 void logger(string message, clock_t opstarttime, clock_t opendtime);
+map<string, string> stripNullfields(map<string, string> record);
 #endif

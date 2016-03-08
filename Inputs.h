@@ -8,7 +8,7 @@
 #include <ctime>
 using namespace std;
 
-map<string, string> getRecords(map<string, string> schema, vector<string> ignoreFields = { "Inquiry Number","Date" });
+map<string, string> getRecords(map<string, string> schema, vector<string> ignoreFields = { "Inquiry Number","Date" }, bool validate = true);
 bool ignoreFields(string field, vector<string> Fieldslist);
 string AutoIDgenerator();
 #endif

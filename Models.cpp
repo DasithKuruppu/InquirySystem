@@ -10,3 +10,6 @@ map<int, map<string, string>>  userModel::getRecords() {
 	return readfile(getConfig("user")["location.data"], userModel::chunksize);
 }
 
+string inquiryModel::location = "";
+int inquiryModel::chunksize = 10;
+map<string, string> inquiryModel::schema = map<string, string>{};
