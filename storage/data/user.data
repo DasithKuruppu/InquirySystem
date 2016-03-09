@@ -8,3 +8,8 @@
 'type':'Admin'
 'username':'Admin'
 }
+{
+'password':'JLSR'
+'type':'user'
+'username':'Dasith'
+},

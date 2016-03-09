@@ -2,12 +2,12 @@
 #include "Models.h"
 #include "Validation.h"
 
+
 using namespace std;
 void main()
 
 {
 
-	
 	Initialize();
 	userModel::schema = readALL(getConfig("user")["location.schema"]);
 	userModel::location = getConfig("user")["location.data"];
@@ -17,7 +17,15 @@ void main()
 	inquiryModel::location = getConfig("inquiry")["location.data"];
 	inquiryModel::chunksize = 10;
 
-	LoginMenu();
-	
+    LoginMenu();
+	/*bool x = valDateTime("3/2/2016 17:19:12");
+
+	cout << calculateAge("03/03/1994");
+	if (x) {
+		cout << "true";
+	}
+	else {
+		cout << "false";
+	}*/
 	system("Pause");
 }

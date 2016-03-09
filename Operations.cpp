@@ -141,8 +141,7 @@ map<string, string> readALL(string location) {
 	int linecount = 0;
 	map<string, string> returnMap;
 	while (!infile.eof()) // To get you all the lines.
-	{
-		
+	{	
 			getline(infile, STRING);
 			if (STRING != "\n") {
 				info.push_back(STRING);
@@ -159,7 +158,8 @@ map<string, string> readALL(string location) {
 template <typename Map>
 bool compare_Record(Map const &lhs, Map const &rhs) {
 	// No predicate needed because there is operator== for pairs already.
-	return equal(lhs.begin(), lhs.end(),
+	 return lhs.size() == rhs.size()
+		&& std::equal(lhs.begin(), lhs.end(),
 			rhs.begin());
 }
 
@@ -228,9 +228,7 @@ void deleteRecord(map<string, string> Deleterecord, string location, const int c
 				if (!compare_Record(storedrecord, Deleterecord)) {
 					writeChunk(storedrecord, ofile);
 				}
-				else {
-					writeChunk(storedrecord, ofile);
-				}
+				
 				linecount = 0;
 			}
 		}

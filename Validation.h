@@ -7,10 +7,19 @@
 #include<string>
 #include <sstream>
 #include <ctime>
-
+#include <iomanip>
+#include <map>
 using namespace std;
+struct genericResult {
+	bool success = false;
+	string message = "";
+	map<string, string> errorstack;
+};
 
-bool valPhone(string phoneno);
 bool valDateTime(const std::string& s);
+genericResult validateandNormalizeField(string subtype, string &Fielddata, bool allownull=true, bool validate=true);
+void autoGenerate(string subtype, string &Fielddata, bool enable);
+string calculateAge(string DOB);
+
 
 #endif

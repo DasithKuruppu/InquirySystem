@@ -1,10 +1,10 @@
 {
 'Address':'string',
 'Age':'string.int',
-'Date':'system.datetime',
+'Date':'system.datetime NOTNULL',
 'Date of Birth':'string.bday',
-'Inquirer Name':'Saul',
-'Inquiry Number':'system.number',
-'Qualification':'Nothing',
-'Telephone No':'string.phoneno'
+'Inquirer Name':'string NOTNULL',
+'Inquiry Number':'system.number NOTNULL',
+'Qualification':'string',
+'Telephone No':'string.phoneno NOTNULL'
 },

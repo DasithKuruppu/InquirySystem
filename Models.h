@@ -2,11 +2,6 @@
 #include "Operations.h"
 #include "Validation.h"
 
-struct genericResult {
-	bool success = false;
-	string message = "";
-	map<string, string> errorstack;
-};
 struct userModel
 {
 	userModel(map<string, string> data) {
@@ -50,40 +45,40 @@ struct userModel
 		update(userModel::Data, editedobj, userModel::location, userModel::chunksize);
 	}
 
-	genericResult save() {
-		genericResult returnresult;
-		map<string, string> search;
-		search["username"] = Data["username"];
-		search=findWhere(search, userModel::location, userModel::chunksize);		
-		Data["password"] = generatehash(Data["password"]);
-		if (search.size() == 0) {
-			Addrecord(userModel::Data, userModel::location, userModel::chunksize);
-			returnresult.success = true;
-		}
-		else {
-			update(search, Data, userModel::location, userModel::chunksize);
-			returnresult.success = true;
-		}
-		return returnresult;
-		
+genericResult save() {
+	genericResult returnresult;
+	map<string, string> search;
+	search["username"] = Data["username"];
+	search = findWhere(search, userModel::location, userModel::chunksize);
+	Data["password"] = generatehash(Data["password"]);
+	if (search.size() == 0) {
+		Addrecord(userModel::Data, userModel::location, userModel::chunksize);
+		returnresult.success = true;
 	}
-	genericResult signIn() {
-		genericResult returnresult;
-		try {
-			
-			returnresult.success = login(Data);
-			Data = currentuser().getUser();
-		}
-		catch(map<string, string> e){
-			
-			returnresult.errorstack = e;
-			returnresult.message = "error occured during sign in";
-		}
-		
-		return returnresult;
-		 
+	else {
+		update(search, Data, userModel::location, userModel::chunksize);
+		returnresult.success = true;
 	}
-	
+	return returnresult;
+
+}
+genericResult signIn() {
+	genericResult returnresult;
+	try {
+
+		returnresult.success = login(Data);
+		Data = currentuser().getUser();
+	}
+	catch (map<string, string> e) {
+
+		returnresult.errorstack = e;
+		returnresult.message = "error occured during sign in";
+	}
+
+	return returnresult;
+
+}
+
 };
 
 struct inquiryModel {
@@ -94,7 +89,11 @@ struct inquiryModel {
 	static genericResult addInquiry(map<string, string> data) {
 		map<string, string> findresult = findWhere(data, inquiryModel::location, inquiryModel::chunksize);
 		genericResult returnresult;
-		if (findresult.size() == 0) {
+		if (data.size() == 0) {
+			returnresult.success = false;
+			returnresult.message = "Failed to add record";
+		}
+		else if (findresult.size() == 0) {
 			Addrecord(data, inquiryModel::location, inquiryModel::chunksize);
 			returnresult.success = true;
 		}
@@ -104,8 +103,16 @@ struct inquiryModel {
 		}
 		return returnresult;
 	}
+	static void autoGenerateAge(map<int,map<string,string>> &results) {
+		for (map<int, map<string, string>>::iterator ii = results.begin(); ii != results.end(); ++ii)
+		{
+			(*ii).second["Age"] = calculateAge((*ii).second["Date of Birth"]);
+		}
+	}
 	static map<int, map<string, string>>  getRecords() {
-		return readfile(inquiryModel::location, inquiryModel::chunksize);
+		map<int, map<string, string>> results = readfile(inquiryModel::location, inquiryModel::chunksize);
+		inquiryModel::autoGenerateAge(results);
+		return results ;
 	}
 	static map<string, string> findRecord(map<string, string> query) {
 		
@@ -113,8 +120,9 @@ struct inquiryModel {
 		
 	}
 	static map<int,map<string, string>> findRecords(map<string, string> query) {
-
-		return searchRecords(query, inquiryModel::location, inquiryModel::chunksize);
+		map<int, map<string, string>> results = searchRecords(query, inquiryModel::location, inquiryModel::chunksize);
+		inquiryModel::autoGenerateAge(results);
+		return results;
 
 	}
 	static genericResult removeRecord(map<string, string> remRecord) {
@@ -140,9 +148,6 @@ struct inquiryModel {
 				}
 
 			}
-			
-
-		
 		update(originalobj, uptatedobj, inquiryModel::location, inquiryModel::chunksize);
 	}
 	
